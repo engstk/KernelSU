@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.FolderDelete
 import androidx.compose.material.icons.filled.RemoveModerator
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -191,21 +190,6 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             }
 
             val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-            var checkUpdate by rememberSaveable {
-                mutableStateOf(
-                    prefs.getBoolean("check_update", true)
-                )
-            }
-            SwitchItem(
-                icon = Icons.Filled.Update,
-                title = stringResource(id = R.string.settings_check_update),
-                summary = stringResource(id = R.string.settings_check_update_summary),
-                checked = checkUpdate
-            ) {
-                prefs.edit().putBoolean("check_update", it).apply()
-                checkUpdate = it
-            }
-
             var enableWebDebugging by rememberSaveable {
                 mutableStateOf(
                     prefs.getBoolean("enable_web_debugging", false)

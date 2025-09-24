@@ -98,8 +98,7 @@ private fun AboutCardContent() {
                 val annotatedString = AnnotatedString.Companion.fromHtml(
                     htmlString = stringResource(
                         id = R.string.about_source_code,
-                        "<b><a href=\"https://github.com/tiann/KernelSU\">GitHub</a></b>",
-                        "<b><a href=\"https://t.me/KernelSU\">Telegram</a></b>"
+                        "<b><a href=\"https://github.com/engstk/KernelSU\">GitHub</a></b>"
                     ),
                     linkStyles = TextLinkStyles(
                         style = SpanStyle(
