@@ -92,6 +92,12 @@ jobs:
         chmod 644 keystore.jks
 
     # Build Manager APK
+    - name: Inject dynamic version
+      working-directory: manager
+      run: |
+        echo "GITHUB_RUN_NUMBER=${{ github.run_number }}" >> gradle.properties
+        echo "VERSION_NAME=v1.0.5-${{ github.run_number }}" >> gradle.properties
+
     - name: Build Release APK
       working-directory: manager
       run: |
@@ -111,7 +117,7 @@ jobs:
     - name: Upload Release APK
       uses: actions/upload-artifact@v4
       with:
-        name: KernelSU-Manager-arm64-release
+        name: KernelSU-Manager-v1.0.5-${{ github.run_number }}
         path: manager/app/build/outputs/apk/release/*.apk
 
     # Cleanup keystore
