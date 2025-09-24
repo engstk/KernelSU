@@ -66,17 +66,20 @@ android {
         }
     }
 
+    defaultConfig {
+        // fallback if not set in gradle.properties
+        versionName = (project.findProperty("VERSION_NAME") as? String) ?: "v1.0.5"
+        versionCode = managerVersionCode
+    }
+
     applicationVariants.all {
-        outputs.forEach {
-            val output = it as BaseVariantOutputImpl
-            output.outputFileName = "KernelSU_${managerVersionName}_${managerVersionCode}-$name.apk"
-        }
-        kotlin.sourceSets {
-            getByName(name) {
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
+        outputs.forEach { output ->
+            val outputImpl = output as BaseVariantOutputImpl
+            val verName = project.findProperty("VERSION_NAME") ?: "v1.0.5"
+            outputImpl.outputFileName = "KernelSU_${verName}_${managerVersionCode}-blu_spark.apk"
         }
     }
+
 
     // https://stackoverflow.com/a/77745844
     tasks.withType<PackageAndroidArtifact> {
