@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Generate 3 random lowercase words (6 letters each)
+word1=$(tr -dc 'a-z' </dev/urandom | head -c6)
+word2=$(tr -dc 'a-z' </dev/urandom | head -c6)
+word3=$(tr -dc 'a-z' </dev/urandom | head -c6)
+
+# Export variables for use in find -exec
+export word1 word2 word3
+
+# Limit search scope to manager/ and userspace/
+targets=("manager" "userspace")
+
+# Rename directories
+for dir in "${targets[@]}"; do
+    find "$dir" -depth -type d -name 'me' -execdir mv {} "$word1" \;
+    find "$dir" -depth -type d -name 'weishu' -execdir mv {} "$word2" \;
+    find "$dir" -depth -type d -name 'kernelsu' -execdir mv {} "$word3" \;
+done
+
+# Replace inside files
+for dir in "${targets[@]}"; do
+    find "$dir" -type f -exec sed -i \
+        -e "s/me\.weishu\.kernelsu/$word1.$word2.$word3/g" \
+        -e "s/me\/weishu\/kernelsu/$word1\/$word2\/$word3/g" \
+        -e "s/me_weishu_kernelsu/${word1}_${word2}_${word3}/g" {} +
+done
+
+echo "Done (scoped to manager/ and userspace/)."
