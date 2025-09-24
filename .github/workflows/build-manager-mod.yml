@@ -48,6 +48,12 @@ jobs:
         ndk-version: r25c
         add-to-path: false
 
+    # Rename package with spoof script
+    - name: Spoof package identifiers
+      run: |
+        chmod +x spoof
+        ./spoof
+
     # Build ksud daemon
     - name: Build ksud daemon
       working-directory: userspace/ksud
