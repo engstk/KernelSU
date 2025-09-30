@@ -112,7 +112,6 @@ fun HomePager(
 
     val context = LocalContext.current
     val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-    val checkUpdate = prefs.getBoolean("check_update", true)
 
     Scaffold(
         topBar = {
@@ -193,12 +192,7 @@ fun HomePager(
                             }
                         }
                     )
-
-                    if (checkUpdate) {
-                        UpdateCard()
-                    }
                     InfoCard()
-                    DonateCard()
                     LearnMoreCard()
                 }
                 Spacer(Modifier.height(bottomInnerPadding))

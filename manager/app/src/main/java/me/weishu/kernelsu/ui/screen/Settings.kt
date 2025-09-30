@@ -120,35 +120,13 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 val context = LocalContext.current
                 val scope = rememberCoroutineScope()
                 val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                var checkUpdate by rememberSaveable {
-                    mutableStateOf(prefs.getBoolean("check_update", true))
-                }
 
-                Card(
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(),
-                ) {
-                    SuperSwitch(
-                        title = stringResource(id = R.string.settings_check_update),
-                        summary = stringResource(id = R.string.settings_check_update_summary),
-                        leftAction = {
-                            Icon(
-                                Icons.Rounded.Update,
-                                modifier = Modifier.padding(end = 16.dp),
-                                contentDescription = stringResource(id = R.string.settings_check_update),
-                                tint = colorScheme.onBackground
-                            )
-                        },
-                        checked = checkUpdate,
-                        onCheckedChange = {
-                            prefs.edit {
-                                putBoolean("check_update", it)
-                            }
-                            checkUpdate = it
-                        }
-                    )
-                    KsuIsValid {
+                KsuIsValid {
+                    Card(
+                        modifier = Modifier
+                            .padding(top = 12.dp)
+                            .fillMaxWidth(),
+                    ) {
                         var checkModuleUpdate by rememberSaveable {
                             mutableStateOf(prefs.getBoolean("module_check_update", true))
                         }

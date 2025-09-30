@@ -52,7 +52,7 @@
     <string name="home_support_title">از ما حمایت کنید</string>
     <string name="home_support_content">KernelSU رایگان است و همیشه خواهد بود و منبع باز است. با این حال، می توانید با اهدای کمک مالی به ما نشان دهید که برایتان مهم است.</string>
     <string name="about_source_code">
-<![CDATA[ View source code at %1$s<br/>Join our %2$s channel ]]>
+<![CDATA[ View source code at %1$s ]]>
 </string>
     <string name="profile">پروفایل برنامه</string>
     <string name="profile_default">پیش‌فرض</string>
