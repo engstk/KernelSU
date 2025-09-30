@@ -107,14 +107,6 @@ jobs:
     - name: Build Release APK
       working-directory: manager
       run: |
-        {
-          echo 'org.gradle.parallel=true'
-          echo 'org.gradle.vfs.watch=true'
-          echo 'org.gradle.jvmargs=-Xmx2048m'
-          echo 'android.native.buildOutput=verbose'
-        } >> gradle.properties
-
-        # Remove config cache if present, it's known to break some CI builds
         sed -i 's/org.gradle.configuration-cache=true//g' gradle.properties
 
         ./gradlew clean assembleRelease
