@@ -17,76 +17,52 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
 
-    # Setup tools
+    - name: Setup rustup
+      run: |
+        rustup update stable
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: userspace/ksud
+        cache-targets: false
+
+    - name: Install cross
+      run: |
+        RUSTFLAGS="" cargo install cross --git https://github.com/cross-rs/cross --rev 66845c1
+
     - name: Set up JDK 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
         java-version: '21'
 
-    - name: Setup Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        targets: aarch64-linux-android
-
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
       with:
         cache-cleanup: on-success
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Setup Android NDK
-      uses: nttld/setup-ndk@v1
-      id: setup-ndk
-      with:
-        ndk-version: r25c
-        add-to-path: false
-
-    # Rename package with spoof script
     - name: Spoof package identifiers
       run: |
         chmod +x spoof
         ./spoof
 
-    # Build ksud daemon
-    - name: Build ksud daemon
+    - name: Build ksud
       working-directory: userspace/ksud
-      env:
-        ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
       run: |
-        export NDK_TOOLCHAIN=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64
-        export CC_aarch64_linux_android=$NDK_TOOLCHAIN/bin/aarch64-linux-android21-clang
-        export AR_aarch64_linux_android=$NDK_TOOLCHAIN/bin/llvm-ar
-        export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$NDK_TOOLCHAIN/bin/aarch64-linux-android21-clang
+        CROSS_NO_WARNINGS=0 cross build --target aarch64-linux-android --release --manifest-path ./Cargo.toml
 
-        mkdir -p ~/.cargo
-        cat > ~/.cargo/config.toml << EOF
-        [target.aarch64-linux-android]
-        ar = "$NDK_TOOLCHAIN/bin/llvm-ar"
-        linker = "$NDK_TOOLCHAIN/bin/aarch64-linux-android21-clang"
-
-        [env]
-        CC_aarch64_linux_android = "$NDK_TOOLCHAIN/bin/aarch64-linux-android21-clang"
-        AR_aarch64_linux_android = "$NDK_TOOLCHAIN/bin/llvm-ar"
-        CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER = "$NDK_TOOLCHAIN/bin/aarch64-linux-android21-clang"
-        EOF
-
-        cargo build --target aarch64-linux-android --release
-
-    # Prepare native libs
     - name: Setup native libraries
       run: |
         mkdir -p manager/app/src/main/jniLibs/arm64-v8a
         cp userspace/ksud/target/aarch64-linux-android/release/ksud manager/app/src/main/jniLibs/arm64-v8a/libksud.so
         chmod 644 manager/app/src/main/jniLibs/arm64-v8a/libksud.so
 
-    # Write keystore and gradle.properties in manager
     - name: Setup signing
       working-directory: manager
       run: |
@@ -97,12 +73,11 @@ jobs:
         echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > keystore.jks
         chmod 644 keystore.jks
 
-    # Build Manager APK
     - name: Inject dynamic version
       working-directory: manager
       run: |
         echo "GITHUB_RUN_NUMBER=${{ github.run_number }}" >> gradle.properties
-        echo "VERSION_NAME=v1.0.5-${{ github.run_number }}" >> gradle.properties
+        echo "VERSION_NAME=v2.0.0-${{ github.run_number }}" >> gradle.properties
 
     - name: Build Release APK
       working-directory: manager
@@ -111,17 +86,15 @@ jobs:
 
         ./gradlew clean assembleRelease
 
-    # Create GitHub Release and upload APK
     - name: Create Release and Upload APK
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v1.0.5-${{ github.run_number }}
-        name: v1.0.5-${{ github.run_number }}
+        tag_name: v2.0.0-${{ github.run_number }}
+        name: v2.0.0-${{ github.run_number }}
         files: manager/app/build/outputs/apk/release/*.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Cleanup keystore
     - name: Cleanup signing files
       if: always()
       working-directory: manager
