@@ -52,10 +52,16 @@ jobs:
         chmod +x spoof
         ./spoof
 
-    - name: Build ksud
-      working-directory: userspace/ksud
+    - name: Inject dynamic version
+      id: version
       run: |
-        CROSS_NO_WARNINGS=0 cross build --target aarch64-linux-android --release --manifest-path ./Cargo.toml
+        VERSION_NAME="v2.0.0-${{ github.run_number }}"
+        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+        echo "VERSION_NAME=$VERSION_NAME" >> manager/gradle.properties
+
+    - name: Build ksud
+      run: |
+        CROSS_NO_WARNINGS=0 cross build --target aarch64-linux-android --release --manifest-path ./userspace/ksud/Cargo.toml
 
     - name: Setup native libraries
       run: |
@@ -73,12 +79,6 @@ jobs:
         echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > keystore.jks
         chmod 644 keystore.jks
 
-    - name: Inject dynamic version
-      working-directory: manager
-      run: |
-        echo "GITHUB_RUN_NUMBER=${{ github.run_number }}" >> gradle.properties
-        echo "VERSION_NAME=v2.0.0-${{ github.run_number }}" >> gradle.properties
-
     - name: Build Release APK
       working-directory: manager
       run: |
@@ -89,8 +89,8 @@ jobs:
     - name: Create Release and Upload APK
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v2.0.0-${{ github.run_number }}
-        name: v2.0.0-${{ github.run_number }}
+        tag_name: ${{ env.VERSION_NAME }}
+        name: ${{ env.VERSION_NAME }}
         files: manager/app/build/outputs/apk/release/*.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
