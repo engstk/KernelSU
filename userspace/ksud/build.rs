@@ -24,7 +24,7 @@ fn get_git_version() -> Result<(u32, String), std::io::Error> {
             .stdout,
     )
     .map_err(|_| std::io::Error::other("Failed to read git describe stdout"))?;
-    let version_name = version_name.trim_start_matches('v').to_string();
+    let version_name = format!("v{}", version_name.trim_start_matches('v').split_once('-').map(|(v, _)| v).unwrap_or(version_name.trim_start_matches('v')));
     Ok((version_code, version_name))
 }
 
