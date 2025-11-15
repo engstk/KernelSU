@@ -64,17 +64,16 @@ android {
         }
     }
 
-    defaultConfig {
-        // fallback if not set in gradle.properties
-        versionName = (project.findProperty("VERSION_NAME") as? String) ?: "v2.0.0"
-        versionCode = managerVersionCode
-    }
-
     applicationVariants.all {
-        outputs.forEach { output ->
-            val outputImpl = output as BaseVariantOutputImpl
-            val verName = project.findProperty("VERSION_NAME") ?: "v2.0.0"
-            outputImpl.outputFileName = "KernelSU_${verName}_${managerVersionCode}-blu_spark.apk"
+        outputs.forEach {
+            val output = it as BaseVariantOutputImpl
+            val verName = project.findProperty("VERSION_NAME") ?: "v2.1.2"
+            output.outputFileName = "KernelSU_${verName}_${managerVersionCode}-blu_spark.apk"
+        }
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
         }
     }
 
