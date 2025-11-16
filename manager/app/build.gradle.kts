@@ -26,6 +26,12 @@ apksign {
 android {
     namespace = "me.weishu.kernelsu"
 
+    defaultConfig {
+        val injectedVersionName = project.findProperty("VERSION_NAME")?.toString()
+        versionName = injectedVersionName ?: managerVersionName
+        versionCode = managerVersionCode
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -65,10 +71,13 @@ android {
     }
 
     applicationVariants.all {
+        val finalVersionName = this.versionName
+
         outputs.forEach {
             val output = it as BaseVariantOutputImpl
-            output.outputFileName = "KernelSU_${managerVersionName}_${managerVersionCode}-$name.apk"
+            output.outputFileName = "KernelSU_${finalVersionName}_${managerVersionCode}-blu_spark.apk"
         }
+
         kotlin.sourceSets {
             getByName(name) {
                 kotlin.srcDir("build/generated/ksp/$name/kotlin")
