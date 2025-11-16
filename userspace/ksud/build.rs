@@ -22,13 +22,17 @@ fn get_git_version() -> Result<(u32, String), std::io::Error> {
         .map_err(|_| std::io::Error::other("Failed to parse git count"))?;
     let version_code = 30000 + version_code;
 
-    let version_name = String::from_utf8(
-        Command::new("git")
-            .args(["describe", "--tags", "--always"])
-            .output()?
-            .stdout,
-    )
-    .map_err(|_| std::io::Error::other("Failed to read git describe stdout"))?;
+    let version_name = match env::var("VERSION_NAME") {
+        Ok(version_name) => version_name,
+        Err(_) => String::from_utf8(
+            Command::new("git")
+                .args(["describe", "--tags", "--always"])
+                .output()?
+                .stdout,
+        )
+        .map_err(|_| std::io::Error::other("Failed to read git describe stdout"))?,
+    };
+
     let version_name = version_name.trim_start_matches('v').to_string();
     Ok((version_code, version_name))
 }
