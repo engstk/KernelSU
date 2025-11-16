@@ -51,7 +51,7 @@
     <string name="home_click_to_learn_kernelsu">知曉安裝、使用 KernelSU 本體與其模組功能的方法</string>
     <string name="home_support_title">協助發展</string>
     <string name="home_support_content">KernelSU 一向以免費與開放原始碼自居，矢志不渝。若想協助我們，可以用小額捐款表達你對專案發展的大力支持。</string>
-    <string name="about_source_code"><![CDATA[前往 %1$s 檢閱原始碼<br/>前往 %2$s 加入頻道]]></string>
+    <string name="about_source_code"><![CDATA[前往 %1$s 檢閱原始碼]]></string>
     <string name="profile_umount_modules">解除掛載模組功能</string>
     <string name="failed_to_update_app_profile">無法更新「%s」App Profile</string>
     <string name="require_kernel_version">管理工具無法以老舊的 KernelSU %d 版本正常運作。請升級至 %d 以上的版本！</string>

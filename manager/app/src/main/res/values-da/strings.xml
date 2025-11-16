@@ -33,7 +33,7 @@
     <string name="home_learn_kernelsu">Lær KernelSU</string>
     <string name="home_learn_kernelsu_url">https://kernelsu.org/guide/what-is-kernelsu.html</string>
     <string name="home_click_to_learn_kernelsu">Lær hvordan man installerer KernelSU og moduler.</string>
-    <string name="about_source_code"><![CDATA[View source code at %1$s<br/>Join our %2$s channel]]></string>
+    <string name="about_source_code"><![CDATA[View source code at %1$s]]></string>
     <string name="profile_default">Standard</string>
     <string name="profile_template">Skabelon</string>
     <string name="profile_namespace">Monter namespace</string>

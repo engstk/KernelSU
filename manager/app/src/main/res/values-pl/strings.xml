@@ -52,7 +52,7 @@
     <string name="home_click_to_learn_kernelsu">Dowiedz się jak zainstalować KernelSU i jak korzystać z modułów.</string>
     <string name="home_support_title">Wesprzyj nas</string>
     <string name="home_support_content">KernelSU jest i zawsze będzie darmowy oraz otwarty. Niemniej jednak możesz nam pokazać, że Ci zależy, wysyłając darowiznę.</string>
-    <string name="about_source_code"><![CDATA[Przejrzyj kod źródłowy na %1$s<br/>Dołącz do kanału %2$s]]></string>
+    <string name="about_source_code"><![CDATA[Przejrzyj kod źródłowy na %1$s]]></string>
     <string name="profile" translatable="false">Profil aplikacji</string>
     <string name="profile_default">Domyślny</string>
     <string name="profile_template">Szablon</string>
