@@ -1,0 +1,101 @@
+name: Build KernelSU Manager (ARM64)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-all:
+    name: Build ksud + Manager APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Setup rustup
+      run: |
+        rustup update stable
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: userspace/ksud
+        cache-targets: false
+
+    - name: Install cross
+      run: |
+        RUSTFLAGS="" cargo install cross --git https://github.com/cross-rs/cross --rev 66845c1
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
+      with:
+        cache-cleanup: on-success
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Spoof package identifiers
+      run: |
+        chmod +x spoof
+        ./spoof
+
+    - name: Inject dynamic version
+      id: version
+      run: |
+        VERSION_NAME="v2.1.2-${{ github.run_number }}"
+        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+        echo "VERSION_NAME=$VERSION_NAME" >> manager/gradle.properties
+
+    - name: Build ksud
+      run: |
+        CROSS_NO_WARNINGS=0 cross build --target aarch64-linux-android --release --manifest-path ./userspace/ksud/Cargo.toml
+
+    - name: Setup native libraries
+      run: |
+        mkdir -p manager/app/src/main/jniLibs/arm64-v8a
+        cp userspace/ksud/target/aarch64-linux-android/release/ksud manager/app/src/main/jniLibs/arm64-v8a/libksud.so
+        chmod 644 manager/app/src/main/jniLibs/arm64-v8a/libksud.so
+
+    - name: Setup signing
+      working-directory: manager
+      run: |
+        echo KEYSTORE_PASSWORD='${{ secrets.KEYSTORE_PASSWORD }}' >> gradle.properties
+        echo KEY_ALIAS='${{ secrets.KEY_ALIAS }}' >> gradle.properties
+        echo KEY_PASSWORD='${{ secrets.KEY_PASSWORD }}' >> gradle.properties
+        echo KEYSTORE_FILE='keystore.jks' >> gradle.properties
+        echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > keystore.jks
+        chmod 644 keystore.jks
+
+    - name: Build Release APK
+      working-directory: manager
+      run: |
+        sed -i 's/org.gradle.configuration-cache=true//g' gradle.properties
+
+        ./gradlew clean assembleRelease
+
+    - name: Create Release and Upload APK
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ env.VERSION_NAME }}
+        name: ${{ env.VERSION_NAME }}
+        files: manager/app/build/outputs/apk/release/*.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Cleanup signing files
+      if: always()
+      working-directory: manager
+      run: rm -f keystore.jks gradle.properties
