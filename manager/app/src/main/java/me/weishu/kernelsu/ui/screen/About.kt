@@ -71,12 +71,9 @@ fun AboutScreen(navigator: DestinationsNavigator) {
         tint = HazeTint(colorScheme.surface.copy(0.8f))
     )
 
-    val htmlString = stringResource(
-        id = R.string.about_source_code,
-        "<b><a href=\"https://github.com/tiann/KernelSU\">GitHub</a></b>",
-        "<b><a href=\"https://t.me/KernelSU\">Telegram</a></b>"
+    val result = listOf(
+        LinkInfo("GitHub", "https://github.com/engstk/KernelSU")
     )
-    val result = extractLinks(htmlString)
 
     Scaffold(
         topBar = {

@@ -111,7 +111,6 @@ fun HomePager(
 
     val context = LocalContext.current
     val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-    val checkUpdate = prefs.getBoolean("check_update", true)
     val themeMode = prefs.getInt("color_mode", 0)
 
     Scaffold(
@@ -158,12 +157,6 @@ fun HomePager(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    if (ksuVersion != null && !Natives.isLkmMode) {
-                        WarningCard(
-                            stringResource(id = R.string.home_gki_warning),
-                            themeMode
-                        )
-                    }
                     if (isManager && Natives.requireNewKernel()) {
                         WarningCard(
                             stringResource(id = R.string.require_kernel_version)
@@ -196,12 +189,7 @@ fun HomePager(
                         },
                         themeMode = themeMode
                     )
-
-                    if (checkUpdate) {
-                        UpdateCard(themeMode)
-                    }
                     InfoCard()
-                    DonateCard()
                     LearnMoreCard()
                 }
                 Spacer(Modifier.height(bottomInnerPadding))

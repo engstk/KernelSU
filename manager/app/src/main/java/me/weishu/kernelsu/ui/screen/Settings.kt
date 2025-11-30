@@ -134,37 +134,15 @@ fun SettingPager(
             item {
                 val context = LocalContext.current
                 val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                var checkUpdate by rememberSaveable {
-                    mutableStateOf(prefs.getBoolean("check_update", true))
-                }
 
-                Card(
-                    modifier = Modifier
-                        .padding(top = 12.dp)
-                        .fillMaxWidth(),
-                ) {
-                    SuperSwitch(
-                        title = stringResource(id = R.string.settings_check_update),
-                        summary = stringResource(id = R.string.settings_check_update_summary),
-                        leftAction = {
-                            Icon(
-                                Icons.Rounded.Update,
-                                modifier = Modifier.padding(end = 16.dp),
-                                contentDescription = stringResource(id = R.string.settings_check_update),
-                                tint = colorScheme.onBackground
-                            )
-                        },
-                        checked = checkUpdate,
-                        onCheckedChange = {
-                            prefs.edit {
-                                putBoolean("check_update", it)
-                            }
-                            checkUpdate = it
-                        }
-                    )
-                    KsuIsValid {
+                KsuIsValid {
+                    Card(
+                        modifier = Modifier
+                            .padding(top = 12.dp)
+                            .fillMaxWidth(),
+                    ) {
                         var checkModuleUpdate by rememberSaveable {
-                            mutableStateOf(prefs.getBoolean("module_check_update", true))
+                            mutableStateOf(prefs.getBoolean("module_check_update", false))
                         }
                         SuperSwitch(
                             title = stringResource(id = R.string.settings_module_check_update),
@@ -202,7 +180,7 @@ fun SettingPager(
                         stringResource(id = R.string.settings_theme_mode_monet_dark),
                     )
                     var themeMode by rememberSaveable {
-                        mutableIntStateOf(prefs.getInt("color_mode", 0))
+                        mutableIntStateOf(prefs.getInt("color_mode", 3))
                     }
                     SuperDropdown(
                         title = stringResource(id = R.string.settings_theme),

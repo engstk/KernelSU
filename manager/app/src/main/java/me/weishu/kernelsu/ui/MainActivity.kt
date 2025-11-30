@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val context = LocalActivity.current ?: this
             val prefs = context.getSharedPreferences("settings", MODE_PRIVATE)
-            var colorMode by remember { mutableIntStateOf(prefs.getInt("color_mode", 0)) }
+            var colorMode by remember { mutableIntStateOf(prefs.getInt("color_mode", 3)) }
             var keyColorInt by remember { mutableIntStateOf(prefs.getInt("key_color", 0)) }
             val keyColor = remember(keyColorInt) { if (keyColorInt == 0) null else Color(keyColorInt) }
 
