@@ -55,7 +55,7 @@ jobs:
     - name: Inject dynamic version
       id: version
       run: |
-        VERSION_NAME="v2.1.2-${{ github.run_number }}"
+        VERSION_NAME="v3.0.0-${{ github.run_number }}"
         echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
         echo "VERSION_NAME=$VERSION_NAME" >> manager/gradle.properties
 
