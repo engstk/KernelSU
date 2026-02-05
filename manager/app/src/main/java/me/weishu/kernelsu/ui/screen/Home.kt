@@ -160,9 +160,7 @@ fun HomePager(
                     }
                     StatusCard(
                         kernelVersion, ksuVersion, lkmMode,
-                        onClickInstall = {
-                            navigator.push(Route.Install)
-                        },
+                        onClickInstall = {},
                         onClickSuperuser = {
                             mainState.animateToPage(1)
                         },
