@@ -32,6 +32,9 @@ val baseCFlags = listOf(
 )
 val baseCppFlags = baseCFlags + "-fno-rtti"
 
+val injectedVersionName = project.findProperty("VERSION_NAME")?.toString()
+val finalVersionName = injectedVersionName ?: managerVersionName
+
 android {
     namespace = "me.weishu.kernelsu"
 
@@ -108,7 +111,7 @@ android {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = managerVersionCode
-        versionName = managerVersionName
+        versionName = finalVersionName
 
         externalNativeBuild {
             cmake {
@@ -142,7 +145,7 @@ androidComponents {
 
 base {
     archivesName.set(
-        "KernelSU_${managerVersionName}_${managerVersionCode}"
+        "KernelSU_${finalVersionName}_${managerVersionCode}-blu_spark"
     )
 }
 
