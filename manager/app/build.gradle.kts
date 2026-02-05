@@ -33,6 +33,9 @@ val baseCFlags = listOf(
 )
 val baseCppFlags = baseCFlags + "-fno-rtti"
 
+val injectedVersionName = project.findProperty("VERSION_NAME")?.toString()
+val finalVersionName = injectedVersionName ?: managerVersionName
+
 android {
     namespace = "me.weishu.kernelsu"
     val isPrBuild = project.findProperty("IS_PR_BUILD")?.toString()?.toBoolean() ?: false
@@ -119,7 +122,7 @@ android {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = managerVersionCode
-        versionName = managerVersionName
+        versionName = finalVersionName
 
         buildConfigField("boolean", "IS_PR_BUILD", isPrBuild.toString())
 
@@ -155,7 +158,7 @@ androidComponents {
 
 base {
     archivesName.set(
-        "KernelSU_${managerVersionName}_${managerVersionCode}"
+        "KernelSU_${finalVersionName}_${managerVersionCode}-blu_spark"
     )
 }
 
