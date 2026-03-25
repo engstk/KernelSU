@@ -27,11 +27,11 @@ class SettingsRepositoryImpl : SettingsRepository {
         set(value) = prefs.edit { putString("ui_mode", value) }
 
     override var checkUpdate: Boolean
-        get() = prefs.getBoolean("check_update", true)
+        get() = prefs.getBoolean("check_update", false)
         set(value) = prefs.edit { putBoolean("check_update", value) }
 
     override var checkModuleUpdate: Boolean
-        get() = prefs.getBoolean("module_check_update", true)
+        get() = prefs.getBoolean("module_check_update", false)
         set(value) = prefs.edit { putBoolean("module_check_update", value) }
 
     override var themeMode: Int

@@ -29,8 +29,7 @@ data class HomeUiState(
     val isFullFeatured: Boolean
         get() = isManager && !requiresNewKernel && isRootAvailable
 
-    val showGkiWarning: Boolean
-        get() = ksuVersion != null && lkmMode == false
+    val showGkiWarning: Boolean = false
 
     val showRequireKernelWarning: Boolean
         get() = isManager && requiresNewKernel
@@ -38,17 +37,13 @@ data class HomeUiState(
     val showRootWarning: Boolean
         get() = ksuVersion != null && !isRootAvailable
 
-    val showManagerPrBuildWarning: Boolean
-        get() = isManager && isManagerPrBuild
+    val showManagerPrBuildWarning: Boolean = false
 
-    val showKernelPrBuildWarning: Boolean
-        get() = isManager && !isManagerPrBuild && isKernelPrBuild
+    val showKernelPrBuildWarning: Boolean = false
 
-    val showVersionMismatchWarning: Boolean
-        get() = ksuVersion != null && ksuVersion.toLong() != currentManagerVersionCode
+    val showVersionMismatchWarning: Boolean = false
 
-    val hasUpdate: Boolean
-        get() = latestVersionInfo.versionCode > currentManagerVersionCode
+    val hasUpdate: Boolean = false
 }
 
 @Immutable
