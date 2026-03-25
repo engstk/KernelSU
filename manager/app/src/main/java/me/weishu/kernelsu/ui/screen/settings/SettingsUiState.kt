@@ -8,7 +8,7 @@ import me.weishu.kernelsu.ui.UiMode
 @Immutable
 data class SettingsUiState(
     val uiMode: String = UiMode.DEFAULT_VALUE,
-    val checkUpdate: Boolean = true,
+    val checkUpdate: Boolean = false,
     val checkModuleUpdate: Boolean = true,
     val themeMode: Int = 0,
     val miuixMonet: Boolean = false,
