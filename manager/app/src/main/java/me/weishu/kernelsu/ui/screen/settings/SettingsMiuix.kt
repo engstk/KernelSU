@@ -120,20 +120,6 @@ fun SettingPagerMiuix(
                         .padding(top = 12.dp)
                         .fillMaxWidth(),
                 ) {
-                    SuperSwitch(
-                        title = stringResource(id = R.string.settings_check_update),
-                        summary = stringResource(id = R.string.settings_check_update_summary),
-                        startAction = {
-                            Icon(
-                                Icons.Rounded.Update,
-                                modifier = Modifier.padding(end = 6.dp),
-                                contentDescription = stringResource(id = R.string.settings_check_update),
-                                tint = colorScheme.onBackground
-                            )
-                        },
-                        checked = uiState.checkUpdate,
-                        onCheckedChange = actions.onSetCheckUpdate
-                    )
                     KsuIsValid {
                         SuperSwitch(
                             title = stringResource(id = R.string.settings_module_check_update),
