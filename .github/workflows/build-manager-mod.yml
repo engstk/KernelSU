@@ -17,35 +17,40 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
     - name: Setup rustup
       run: |
         rustup update stable
-    - uses: Swatinem/rust-cache@v2
+        rustup target add aarch64-linux-android
+
+    - name: Setup rust cache
+      uses: Swatinem/rust-cache@v2
       with:
         workspaces: userspace/ksud
         cache-targets: false
 
-    - name: Install cross
-      run: |
-        RUSTFLAGS="" cargo install cross --git https://github.com/cross-rs/cross --rev 66845c1
+    - name: Setup Android NDK
+      uses: nttld/setup-ndk@v1
+      id: setup-ndk
+      with:
+        ndk-version: r29
 
-    - name: Set up JDK 21
+    - name: Setup JDK 21
       uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
         java-version: '21'
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v5
+      uses: gradle/actions/setup-gradle@v6
       with:
         cache-cleanup: on-success
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
+      uses: android-actions/setup-android@v4
 
     - name: Spoof package identifiers
       run: |
@@ -60,8 +65,11 @@ jobs:
         echo "VERSION_NAME=$VERSION_NAME" >> manager/gradle.properties
 
     - name: Build ksud
+      env:
+        ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       run: |
-        CROSS_NO_WARNINGS=0 cross build --target aarch64-linux-android --release --manifest-path ./userspace/ksud/Cargo.toml
+        source .github/scripts/setup-ksu-build.sh aarch64-linux-android 26
+        cargo build --target aarch64-linux-android --release --manifest-path ./userspace/ksud/Cargo.toml
 
     - name: Setup native libraries
       run: |
