@@ -54,8 +54,7 @@ jobs:
 
     - name: Spoof package identifiers
       run: |
-        chmod +x spoof
-        ./spoof
+        source .github/scripts/spoof.sh
 
     - name: Inject dynamic version
       id: version
