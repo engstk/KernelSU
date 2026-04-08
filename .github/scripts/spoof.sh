@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Generate 3 random lowercase words (6 letters each)
-word1=$(tr -dc 'a-z' </dev/urandom | head -c6)
-word2=$(tr -dc 'a-z' </dev/urandom | head -c6)
-word3=$(tr -dc 'a-z' </dev/urandom | head -c6)
+word1=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+word2=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+word3=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
 
 # Export variables for use in find -exec
 export word1 word2 word3
