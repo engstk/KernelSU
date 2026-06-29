@@ -130,7 +130,6 @@ fun HomePagerMaterial(
                 UpdateCard(state = state, actions = actions)
             }
             InfoCard(systemInfo = state.systemInfo)
-            DonateCard(onOpenUrl = actions.onOpenUrl)
             LearnMoreCard(onOpenUrl = actions.onOpenUrl)
             Spacer(Modifier.height(bottomInnerPadding))
         }
@@ -549,7 +548,6 @@ private fun HomeScreenPreviewContent(
                 actions = actions
             )
             InfoCard(previewSystemInfo.copy(selinuxStatus = selinuxStatus))
-            DonateCard(onOpenUrl = {})
             LearnMoreCard(onOpenUrl = {})
         }
     }
