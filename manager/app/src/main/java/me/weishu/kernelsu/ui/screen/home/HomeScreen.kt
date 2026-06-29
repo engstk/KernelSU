@@ -52,7 +52,7 @@ fun HomePager(
     }
 
     val actions = HomeActions(
-        onInstallClick = { navigator.push(Route.Install) },
+        onInstallClick = {},
         onSuperuserClick = { if (!uiState.showRequireKernelWarning) mainState.animateToPage(1) },
         onModuleClick = { if (!uiState.showRequireKernelWarning) mainState.animateToPage(2) },
         onOpenUrl = uriHandler::openUri,
