@@ -1,34 +1,20 @@
-# KernelSU
+# KernelSU mod
 
 <img src="https://kernelsu.org/logo.png" style="width: 96px;" alt="logo">
 
 A kernel-based root solution for Android devices.
+Additional support for blu_spark kernels.
 
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-orange.svg?logo=gnu)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![GitHub License](https://img.shields.io/github/license/tiann/KernelSU?logo=gnu)](/LICENSE)
+[![](https://img.shields.io/github/v/release/engstk/KernelSU?display_name=tag&label=Release&color=blue)](https://github.com/engstk/KernelSU/releases/latest)
+[![](https://img.shields.io/github/release-date/engstk/KernelSU?label=Date&color=blue)](https://github.com/engstk/KernelSU/releases/latest)
+[![](https://img.shields.io/github/downloads/engstk/KernelSU/latest/total?label=Downloads&color=blue)](https://github.com/engstk/KernelSU/releases/latest)
+[![](https://img.shields.io/github/downloads/engstk/KernelSU/total?label=Total%20Downloads&color=blue)](https://github.com/engstk/KernelSU/releases)
 
 ## Features
 
 1. Kernel-based `su` and root access management.
 2. Module system based on [metamodules](https://kernelsu.org/guide/metamodule.html): Pluggable infrastructure for systemless modifications.
 3. [App Profile](https://kernelsu.org/guide/app-profile.html): Lock up the root power in a cage.
-
-## Compatibility state
-
-KernelSU officially supports Android GKI 2.0 devices (kernel 5.10+). Older kernels (4.14+) are also supported, but the kernel will need to be built manually.
-
-With this, WSA, ChromeOS, and container-based Android are all supported.
-
-Currently, the `arm64-v8a` and `x86_64` architectures are supported.
-
-> [!CAUTION]
-> Recent kernel versions have implemented a breaking change causing KernelSU to fail and potentially trigger a kernel panic on `x86_64`! Check the website for more info!
-
-## Usage
-
-- [Installation](https://kernelsu.org/guide/installation.html)
-- [How to build](https://kernelsu.org/guide/how-to-build.html)
-- [Official website](https://kernelsu.org/)
 
 ## Security
 
