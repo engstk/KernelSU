@@ -54,17 +54,17 @@ jobs:
 
     - name: Spoof package identifiers
       run: |
-        word1=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
-        word2=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
-        word3=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
-        export word1 word2 word3
+        WORD1=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        WORD2=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        WORD3=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        echo "KSU_NAME=KSU mod" >> "$GITHUB_ENV"
+        echo "KSU_PACKAGE_NAME=$WORD1.$WORD2.$WORD3" >> "$GITHUB_ENV"
 
     - name: Inject dynamic version
       id: version
       run: |
-        VERSION_NAME="v3.2.5-${{ github.run_number }}"
-        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
-        echo "VERSION_NAME=$VERSION_NAME" >> manager/gradle.properties
+        VERSION_NAME="v3.3.0-${{ github.run_number }}"
+        echo "VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
 
     - name: Build ksud
       env:
@@ -93,8 +93,7 @@ jobs:
       working-directory: manager
       run: |
         sed -i 's/org.gradle.configuration-cache=true//g' gradle.properties
-
-        ./gradlew clean assembleRelease
+        ./gradlew clean assembleRelease -PKSU_PACKAGE_NAME="$KSU_PACKAGE_NAME" -PKSU_NAME="$KSU_NAME" -PVERSION_NAME="$VERSION_NAME"
 
     - name: Create Release and Upload APK
       uses: softprops/action-gh-release@v2
