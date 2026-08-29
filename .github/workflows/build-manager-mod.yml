@@ -54,8 +54,10 @@ jobs:
 
     - name: Spoof package identifiers
       run: |
-        chmod +x spoof
-        ./spoof
+        word1=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        word2=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        word3=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        export word1 word2 word3
 
     - name: Inject dynamic version
       id: version
