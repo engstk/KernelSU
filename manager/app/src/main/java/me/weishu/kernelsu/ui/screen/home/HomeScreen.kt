@@ -51,7 +51,7 @@ fun HomePager(
     }
 
     val actions = HomeActions(
-        onInstallClick = { navigator.push(Route.Install) },
+        onInstallClick = {},
         onOpenUrl = uriHandler::openUri,
         onJailbreakClick = {
             loadingDialog.showLoading()
