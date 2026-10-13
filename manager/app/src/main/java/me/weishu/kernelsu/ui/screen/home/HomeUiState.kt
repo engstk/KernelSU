@@ -28,8 +28,7 @@ data class HomeUiState(
     val isSELinuxPermissive: Boolean
         get() = systemInfo.selinuxStatus == "Permissive"
 
-    val showGkiWarning: Boolean
-        get() = ksuVersion != null && lkmMode == false
+    val showGkiWarning: Boolean = false
 
     val showLkmUpdate: Boolean
         get() = isManager &&
@@ -55,8 +54,7 @@ data class HomeUiState(
     val showKernelPrBuildWarning: Boolean
         get() = isManager && !isManagerPrBuild && isKernelPrBuild
 
-    val hasUpdate: Boolean
-        get() = latestVersionInfo.versionCode > currentManagerVersionCode
+    val hasUpdate: Boolean = false
 }
 
 @Immutable
