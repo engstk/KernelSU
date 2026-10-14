@@ -365,17 +365,6 @@ private fun SupportLinks(
     SegmentedColumn(modifier = modifier.fillMaxWidth()) {
         item {
             SegmentedListItem(
-                onClick = { onOpenUrl("https://patreon.com/weishu") },
-                headlineContent = { Text(stringResource(R.string.home_support_title)) },
-                supportingContent = { Text(stringResource(R.string.home_support_content)) },
-                leadingContent = {
-                    Icon(Icons.Filled.VolunteerActivism, stringResource(R.string.home_support_title))
-                },
-                trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null) },
-            )
-        }
-        item {
-            SegmentedListItem(
                 onClick = { onOpenUrl(learnMoreUrl) },
                 headlineContent = { Text(stringResource(R.string.home_learn_kernelsu)) },
                 supportingContent = { Text(stringResource(R.string.home_click_to_learn_kernelsu)) },
