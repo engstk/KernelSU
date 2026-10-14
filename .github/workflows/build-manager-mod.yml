@@ -39,7 +39,7 @@ jobs:
         ndk-version: r29
 
     - name: Setup JDK 21
-      uses: actions/setup-java@v5
+      uses: actions/setup-java@v6
       with:
         distribution: 'temurin'
         java-version: '21'
@@ -54,8 +54,8 @@ jobs:
 
     - name: Spoof package identifiers
       run: |
-        WORD1=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
-        WORD2=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
+        WORD1="com"
+        WORD2="android"
         WORD3=$(LC_ALL=C tr -dc 'a-z' </dev/urandom 2>/dev/null | head -c6)
         echo "KSU_NAME=KSU mod" >> "$GITHUB_ENV"
         echo "KSU_PACKAGE_NAME=$WORD1.$WORD2.$WORD3" >> "$GITHUB_ENV"
@@ -63,7 +63,7 @@ jobs:
     - name: Inject dynamic version
       id: version
       run: |
-        VERSION_NAME="v3.3.0-${{ github.run_number }}"
+        VERSION_NAME="v3.3.1-${{ github.run_number }}"
         echo "VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
 
     - name: Build ksud
@@ -96,7 +96,7 @@ jobs:
         ./gradlew clean assembleRelease -PKSU_PACKAGE_NAME="$KSU_PACKAGE_NAME" -PKSU_NAME="$KSU_NAME" -PVERSION_NAME="$VERSION_NAME"
 
     - name: Create Release and Upload APK
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ env.VERSION_NAME }}
         name: ${{ env.VERSION_NAME }}
